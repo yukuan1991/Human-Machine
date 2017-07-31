@@ -57,6 +57,9 @@ void HmRibbon::initConn()
     connect (titleSetting_, &RibbonTool::clicked, this, &HmRibbon::titleSetting);
     connect (importHuman_, &RibbonTool::clicked, this, &HmRibbon::importHuman);
     connect (importMachine_, &RibbonTool::clicked, this, &HmRibbon::importMachine);
+    connect (insertHuman_, &RibbonTool::clicked, this, &HmRibbon::insertHuman);
+    connect (insertMachine_, &RibbonTool::clicked, this, &HmRibbon::insertMachine);
+
 
     connect (this, &HmRibbon::subwindowActive, taskSetting_, &RibbonTool::setEnabled);
     connect (this, &HmRibbon::subwindowActive, timeSetting_, &RibbonTool::setEnabled);

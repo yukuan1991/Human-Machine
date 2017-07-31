@@ -10,6 +10,7 @@ namespace Ui {
 class Analysis;
 }
 class HaView;
+class HaChannel;
 
 class Analysis : public QWidget
 {

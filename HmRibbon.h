@@ -12,6 +12,8 @@ signals:
     void titleSetting ();
     void importHuman ();
     void importMachine ();
+    void insertHuman ();
+    void insertMachine ();
 public:
     HmRibbon(QWidget * parent = null);
     void initConn ();

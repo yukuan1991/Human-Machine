@@ -24,13 +24,17 @@ public:
     ~HaView () override;
     void mouseMoveEvent (QMouseEvent * event) override;
     void mouseReleaseEvent (QMouseEvent * event) override;
+    void insertHuman();
+    void insertMachine(HaChannel*);
     void taskSetting ();
     void setTotalTime (qreal totalTime) { totalTime_ = totalTime; totalTimeChanged (totalTime_); }
     qreal totalTime () const noexcept { return totalTime_; }
     void setTitle ();
     QStringList intersectedChannels ();
     QStringList machines () const;
+    void importHuman (const std::vector<std::pair<QString, qreal>> & data);
     void importData (const QString & channel, const std::vector<std::pair<QString, qreal>> & data);
+    HaChannel* selectedMachine(const QString & channel);
 protected:
     void barClicked (Channel *bar);
     void blockClicked (HaBlock * block);

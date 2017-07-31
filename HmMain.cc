@@ -33,6 +33,9 @@ void HmMain::initConn()
     connect (ui->rib, &HmRibbon::fileSave, this, &HmMain::onFileSave);
     connect (ui->rib, &HmRibbon::importHuman, this, &HmMain::onImportHuman);
     connect (ui->rib, &HmRibbon::importMachine, this, &HmMain::onImportMachine);
+    connect (ui->rib, &HmRibbon::insertHuman, this, &HmMain::onInsertHuman);
+    connect (ui->rib, &HmRibbon::insertMachine, this, &HmMain::onInsertMachine);
+
 
     connect (ui->mdi, &QMdiArea::subWindowActivated, this, &HmMain::set_button_enabled);
 }
@@ -107,7 +110,38 @@ void HmMain::onFileSave()
 
 void HmMain::onImportHuman()
 {
+    if(auto w = activeWindow(); w)
+    {
+        auto view = w->view ();
 
+        if (const auto fileName = QFileDialog::getOpenFileName(this, "导入", ".", "视频分析结果 (*.vaf)").toStdString ();
+                not fileName.empty ())
+        {
+            if (auto content = file::read_all (::utf_to_sys (fileName).data ());
+                    content)
+            {
+                if (const auto vafContent = readVaf (content.value ());
+                        not vafContent.empty ())
+                {
+                    std::vector<std::pair<QString, qreal>> data;
+                    for (auto & it : vafContent)
+                    {
+                        data.emplace_back (it.name, it.stdTime);
+                    }
+                    view->importHuman (data);
+                }
+                else
+                {
+                    QMessageBox::information (this, "文件", "文件信息无法读取");
+                }
+            }
+            else
+            {
+                QMessageBox::information (this, "文件", "系统错误,无法读取文件");
+            }
+        }
+
+    }
 }
 
 void HmMain::onImportMachine()
@@ -153,6 +187,36 @@ void HmMain::onImportMachine()
             }
 
 
+        }
+
+    }
+}
+
+void HmMain::onInsertHuman()
+{
+    if (auto w = activeWindow(); w)
+    {
+        auto view = w->view();
+        view->insertHuman();
+    }
+}
+
+void HmMain::onInsertMachine()
+{
+    if(auto w = activeWindow(); w)
+    {
+        auto view = w->view();
+        const auto list = view->machines();
+        QInputDialog dlg (this);
+        dlg.setComboBoxEditable (false);
+        dlg.setComboBoxItems (list);
+        dlg.setLabelText ("选择机器");
+        dlg.setWindowTitle ("增加作业任务");
+
+        if (const auto res = dlg.exec (); res == QInputDialog::Accepted)
+        {
+
+            view->insertMachine(view->selectedMachine(dlg.textValue()));
         }
 
     }

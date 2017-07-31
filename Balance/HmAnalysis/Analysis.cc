@@ -1,5 +1,6 @@
 ﻿#include "Analysis.h"
 #include "ui_Analysis.h"
+#include "HaChannel.h"
 
 namespace Balance {
 namespace HmAnalysis {

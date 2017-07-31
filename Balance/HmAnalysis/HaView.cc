@@ -95,6 +95,52 @@ void HaView::mouseReleaseEvent (QMouseEvent *event)
     }
 }
 
+void HaView::insertHuman()
+{
+    AddTaskDlg dlg (this);
+    const auto res = dlg.exec ();
+
+    if (QDialog::Accepted != res)
+    {
+        return;
+    }
+
+    const auto time = dlg.taskTime ();
+    const auto name = dlg.taskName ();
+
+    if (time < 0.1)
+    {
+        QMessageBox::information (this, "增加作业", "作业时间为" + QString::number (time) + " 时间太小 无法添加");
+        return;
+    }
+
+    human_->addTask ({.taskName = name, .time = time});
+}
+
+void HaView::insertMachine(HaChannel * machine)
+{
+    AddTaskDlg dlg (this);
+    const auto res = dlg.exec ();
+
+    if (QDialog::Accepted != res)
+    {
+        return;
+    }
+
+    const auto time = dlg.taskTime ();
+    const auto name = dlg.taskName ();
+
+    if (time < 0.1)
+    {
+        QMessageBox::information (this, "增加作业", "作业时间为" + QString::number (time) + " 时间太小 无法添加");
+        return;
+    }
+
+    machine->addTask ({.taskName = name, .time = time});
+}
+
+
+
 void HaView::taskSetting()
 {
     if (const auto s = scene (); s)
@@ -144,6 +190,11 @@ QStringList HaView::machines() const
     return list;
 }
 
+void HaView::importHuman(const std::vector<std::pair<QString, qreal> > &data)
+{
+    human_->importTask (data);
+}
+
 void HaView::importData(const QString &channel, const std::vector<std::pair<QString, qreal> > &data)
 {
     using namespace boost::range;
@@ -154,6 +205,18 @@ void HaView::importData(const QString &channel, const std::vector<std::pair<QStr
     }
 
     (*found)->importTask (data);
+}
+
+HaChannel* HaView::selectedMachine(const QString &channel)
+{
+    using namespace boost::range;
+    const auto found = find_if(machines_, [&] (auto & it) { return it->objectName() == channel; });
+    if(found == end (machines_))
+    {
+        return nullptr;
+    }
+
+    return (*found);
 }
 
 
