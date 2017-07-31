@@ -58,7 +58,7 @@ Balance::HmAnalysis::Analysis *HmMain::activeWindow()
 void HmMain::set_button_enabled()
 {
     const auto state = (activeWindow() != nullptr);
-    ui->rib->set_enabled(state);
+    ui->rib->subwindowActive(state);
 }
 
 void HmMain::onFileNew ()
@@ -125,29 +125,33 @@ void HmMain::onImportMachine()
 
         if (const auto res = dlg.exec (); res == QInputDialog::Accepted)
         {
-            auto fileName = QFileDialog::getOpenFileName(this, "导入", ".", "视频分析结果 (*.vaf)").toStdString ();
-            if (auto content = file::read_all (::utf_to_sys (fileName).data ());
-                    content)
+            if (const auto fileName = QFileDialog::getOpenFileName(this, "导入", ".", "视频分析结果 (*.vaf)").toStdString ();
+                    not fileName.empty ())
             {
-                if (const auto vafContent = readVaf (content.value ());
-                        not vafContent.empty ())
+                if (auto content = file::read_all (::utf_to_sys (fileName).data ());
+                        content)
                 {
-                    std::vector<std::pair<QString, qreal>> data;
-                    for (auto & it : vafContent)
+                    if (const auto vafContent = readVaf (content.value ());
+                            not vafContent.empty ())
                     {
-                        data.emplace_back (it.name, it.stdTime);
+                        std::vector<std::pair<QString, qreal>> data;
+                        for (auto & it : vafContent)
+                        {
+                            data.emplace_back (it.name, it.stdTime);
+                        }
+                        view->importData (dlg.textValue (), data);
                     }
-                    view->importData (dlg.textValue (), data);
+                    else
+                    {
+                        QMessageBox::information (this, "文件", "文件信息无法读取");
+                    }
                 }
                 else
                 {
-                    QMessageBox::information (this, "文件", "文件信息无法读取");
+                    QMessageBox::information (this, "文件", "系统错误,无法读取文件");
                 }
             }
-            else
-            {
-                QMessageBox::information (this, "文件", "系统错误,无法读取文件");
-            }
+
 
         }
 

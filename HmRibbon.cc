@@ -58,13 +58,13 @@ void HmRibbon::initConn()
     connect (importHuman_, &RibbonTool::clicked, this, &HmRibbon::importHuman);
     connect (importMachine_, &RibbonTool::clicked, this, &HmRibbon::importMachine);
 
-//    connect (this, &HmRibbon::set_enabled, taskSetting, &RibbonTool::setEnabled);
-    connect (this, &HmRibbon::set_enabled, timeSetting_, &RibbonTool::setEnabled);
-    connect (this, &HmRibbon::set_enabled, titleSetting_, &RibbonTool::setEnabled);
-    connect (this, &HmRibbon::set_enabled, importHuman_, &RibbonTool::setEnabled);
-    connect (this, &HmRibbon::set_enabled, importMachine_, &RibbonTool::setEnabled);
-    connect (this, &HmRibbon::set_enabled, insertHuman_, &RibbonTool::setEnabled);
-    connect (this, &HmRibbon::set_enabled, insertMachine_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::subwindowActive, taskSetting_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::subwindowActive, timeSetting_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::subwindowActive, titleSetting_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::subwindowActive, importHuman_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::subwindowActive, importMachine_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::subwindowActive, insertHuman_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::subwindowActive, insertMachine_, &RibbonTool::setEnabled);
 
 
 }
