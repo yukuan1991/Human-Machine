@@ -33,7 +33,7 @@ void HmMain::initConn()
     connect (ui->rib, &HmRibbon::fileSave, this, &HmMain::onFileSave);
     connect (ui->rib, &HmRibbon::importHuman, this, &HmMain::onImportHuman);
     connect (ui->rib, &HmRibbon::importMachine, this, &HmMain::onImportMachine);
-
+    connect (ui->rib, &HmRibbon::titleSetting, this, &HmMain::onTitleSetting);
     connect (ui->mdi, &QMdiArea::subWindowActivated, this, &HmMain::set_button_enabled);
 }
 
