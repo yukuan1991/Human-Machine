@@ -20,7 +20,8 @@ public:
     void initConn ();
     ~HmMain();
     Balance::HmAnalysis::Analysis * activeWindow ();
-
+private:
+    void set_button_enabled();
 private:
     void onFileNew ();
     void onTaskSetting ();
@@ -31,6 +32,7 @@ private:
     void onImportMachine ();
     struct _createWindow { qreal totalTime; const QString & title; };
     not_null<Balance::HmAnalysis::Analysis *> createWindow(_createWindow para);
+
 private:
     Ui::HmMain *ui;
 };

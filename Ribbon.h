@@ -27,6 +27,7 @@ signals:
     void fileSave ();
     void fileSaveAs ();
     void fileExit ();
+    void set_enabled(bool);
 protected:
     using ButtonInit = std::function<void (RibbonTool*)>;
 

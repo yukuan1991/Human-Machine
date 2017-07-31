@@ -25,8 +25,8 @@ HmRibbon::HmRibbon(QWidget *parent)
 
         ButtonCell b;
 
-        b.add ("人", QPixmap ("png/作业员.png"));
-        b.add ("机器", QPixmap ("png/导出.png"));
+        b.add ("人", QPixmap ("png/作业员.png"), insertHuman_);
+        b.add ("机器", QPixmap ("png/导出.png"), insertMachine_);
         b.set_title ("插入作业内容");
         tab_content.at (0) = ::move (b);
 
@@ -57,4 +57,14 @@ void HmRibbon::initConn()
     connect (titleSetting_, &RibbonTool::clicked, this, &HmRibbon::titleSetting);
     connect (importHuman_, &RibbonTool::clicked, this, &HmRibbon::importHuman);
     connect (importMachine_, &RibbonTool::clicked, this, &HmRibbon::importMachine);
+
+//    connect (this, &HmRibbon::set_enabled, taskSetting, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::set_enabled, timeSetting_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::set_enabled, titleSetting_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::set_enabled, importHuman_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::set_enabled, importMachine_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::set_enabled, insertHuman_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::set_enabled, insertMachine_, &RibbonTool::setEnabled);
+
+
 }

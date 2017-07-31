@@ -21,5 +21,7 @@ private:
     RibbonTool * titleSetting_ = null;
     RibbonTool * importHuman_ = null;
     RibbonTool * importMachine_ = null;
+    RibbonTool * insertHuman_ = null;
+    RibbonTool * insertMachine_ = null;
 };
 

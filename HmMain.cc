@@ -22,6 +22,7 @@ HmMain::HmMain(QWidget *parent) :
     ui->setupUi(this);
     initConn ();
     ui->mdi->setViewMode (QMdiArea::TabbedView);
+    set_button_enabled();
 }
 
 void HmMain::initConn()
@@ -32,6 +33,8 @@ void HmMain::initConn()
     connect (ui->rib, &HmRibbon::fileSave, this, &HmMain::onFileSave);
     connect (ui->rib, &HmRibbon::importHuman, this, &HmMain::onImportHuman);
     connect (ui->rib, &HmRibbon::importMachine, this, &HmMain::onImportMachine);
+
+    connect (ui->mdi, &QMdiArea::subWindowActivated, this, &HmMain::set_button_enabled);
 }
 
 HmMain::~HmMain()
@@ -50,6 +53,12 @@ Balance::HmAnalysis::Analysis *HmMain::activeWindow()
     }
 
     return null;
+}
+
+void HmMain::set_button_enabled()
+{
+    const auto state = (activeWindow() != nullptr);
+    ui->rib->set_enabled(state);
 }
 
 void HmMain::onFileNew ()
