@@ -11,11 +11,15 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <boost/range/algorithm.hpp>
+#include <QApplication>
+#include <QFontMetricsF>
 
 namespace Balance {
 namespace HmAnalysis {
 
 using std::make_unique;
+using namespace boost::range;
+using std::end;
 
 HaView::HaView(QWidget *parent)
     :QGraphicsView (parent)
@@ -151,6 +155,10 @@ void HaView::taskSetting()
             {
                 setTaskAttribute (item);
             }
+            else
+            {
+                assert (false);
+            }
         }
         else
         {
@@ -165,7 +173,46 @@ void HaView::taskSetting()
 
 void HaView::setTitle ()
 {
-    //QDialog dlg (this);
+    auto & m = machines_;
+    auto & h = human_;
+    QInputDialog dlg;
+    QStringList list;
+
+    list << h->objectName ();
+    list << machines ();
+
+    dlg.setLabelText ("选择需要设置的表头");
+    dlg.setWindowTitle ("表头");
+    dlg.setComboBoxItems (list);
+    const auto res = dlg.exec ();
+
+    if (res != QInputDialog::Accepted)
+    {
+        return;
+    }
+    const auto chosen = dlg.textValue ();
+
+    HaChannel* bar = null;
+
+    auto found = find_if (m, [&] (auto && it) { return it->objectName () == chosen; });
+    if (found == end (m))
+    {
+        if (h->objectName () == chosen)
+        {
+            bar = h;
+        }
+        else
+        {
+            return;
+        }
+    }
+    else
+    {
+        bar = (*found);
+    }
+
+    resetTitle (bar);
+
 }
 
 QStringList HaView::intersectedChannels()
@@ -197,7 +244,6 @@ void HaView::importHuman(const std::vector<std::pair<QString, qreal> > &data)
 
 void HaView::importData(const QString &channel, const std::vector<std::pair<QString, qreal> > &data)
 {
-    using namespace boost::range;
     const auto found = find_if (machines_, [&] (auto & it) { return it->objectName () == channel; });
     if (found == end (machines_))
     {
@@ -251,12 +297,7 @@ void HaView::barClicked(Channel * bar)
 
     connect (setHeader, &QAction::triggered, [&]
     {
-        bool isOk = false;
-        const auto text = QInputDialog::getText (this, "表头", "新表头", QLineEdit::Normal, bar->objectName (), &isOk);
-        if (isOk)
-        {
-            bar->setObjectName (text);
-        }
+        resetTitle (bar);
     });
 
     connect (clearItems, &QAction::triggered, [&]
@@ -276,7 +317,7 @@ void HaView::blockClicked(HaBlock *block)
 
     connect (menu.addAction ("设置作业名"), &QAction::triggered, [this, block] {
         bool isOk = false;
-        const auto text = QInputDialog::getText (this, "表头", "新表头", QLineEdit::Normal, block->name (), &isOk);
+        const auto text = QInputDialog::getText (this, "作业名", "新作业名", QLineEdit::Normal, block->name (), &isOk);
         if (isOk)
         {
             block->setName (text);
@@ -285,10 +326,22 @@ void HaView::blockClicked(HaBlock *block)
 
     connect (menu.addAction ("设置作业时间"), &QAction::triggered, [this, block] {
         bool isOk = false;
-        const auto time = QInputDialog::getDouble (this, "表头", "新表头", block->taskSpan (), 0.1, 1000, 2, &isOk);
+        const auto time = QInputDialog::getDouble (this, "作业时间", "新作业时间", block->taskSpan (), 0.0, 1000, 2, &isOk);
         if (isOk)
         {
             block->setTime (time);
+        }
+    });
+
+    connect (menu.addAction ("调整起始时间"), &QAction::triggered, [this, block] {
+        bool isOk = false;
+        const auto fontOffset = QFontMetricsF (qApp->font ()).height ();
+        const auto currentStartTime = HaBlock::posToTime (block->pos ().y (), totalTime (), fontOffset);
+        const auto time = QInputDialog::getDouble (this, "作业时间", "新作业时间", currentStartTime, 0.0, totalTime (), 2, &isOk);
+        if (isOk)
+        {
+            const auto y = HaBlock::timeToPos (time, totalTime (), fontOffset);
+            block->setPos (0, y);
         }
     });
 
@@ -328,6 +381,16 @@ void HaView::resizeEvent(QResizeEvent *event)
 {
     QGraphicsView::resizeEvent (event);
     fitInView (scene ()->sceneRect ());
+}
+
+void HaView::resetTitle(Channel *bar)
+{
+    bool isOk = false;
+    const auto text = QInputDialog::getText (this, "表头", "新表头", QLineEdit::Normal, bar->objectName (), &isOk);
+    if (isOk)
+    {
+        bar->setObjectName (text);
+    }
 }
 
 } // namespace AmAnalysis

@@ -61,10 +61,7 @@ HEADERS += \
     Balance/HmAnalysis/Analysis.h \
     Balance/HmAnalysis/HaChannel.h \
     Balance/HmAnalysis/ChannelTitle.h \
-    openvaf.h \
-    ui_AddTaskDlg.h \
-    ui_Analysis.h \
-    ui_HmMain.h
+    openvaf.h
 
 LIBS += -lboost_filesystem
 LIBS += -lboost_system
