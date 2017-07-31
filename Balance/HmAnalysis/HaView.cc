@@ -11,6 +11,8 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <boost/range/algorithm.hpp>
+#include <QApplication>
+#include <QFontMetricsF>
 
 namespace Balance {
 namespace HmAnalysis {
@@ -261,10 +263,22 @@ void HaView::blockClicked(HaBlock *block)
 
     connect (menu.addAction ("设置作业时间"), &QAction::triggered, [this, block] {
         bool isOk = false;
-        const auto time = QInputDialog::getDouble (this, "表头", "新表头", block->taskSpan (), 0.1, 1000, 2, &isOk);
+        const auto time = QInputDialog::getDouble (this, "作业时间", "新作业时间", block->taskSpan (), 0.0, 1000, 2, &isOk);
         if (isOk)
         {
             block->setTime (time);
+        }
+    });
+
+    connect (menu.addAction ("调整起始时间"), &QAction::triggered, [this, block] {
+        bool isOk = false;
+        const auto fontOffset = QFontMetricsF (qApp->font ()).height ();
+        const auto currentStartTime = HaBlock::posToTime (block->pos ().y (), totalTime (), fontOffset);
+        const auto time = QInputDialog::getDouble (this, "作业时间", "新作业时间", currentStartTime, 0.0, totalTime (), 2, &isOk);
+        if (isOk)
+        {
+            const auto y = HaBlock::timeToPos (time, totalTime (), fontOffset);
+            block->setPos (0, y);
         }
     });
 
