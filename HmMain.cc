@@ -93,7 +93,7 @@ void HmMain::onTitleSetting()
 {
     if (auto w = activeWindow (); w)
     {
-
+        w->view ()->setTitle ();
     }
 }
 
@@ -112,50 +112,54 @@ void HmMain::onImportHuman()
 
 void HmMain::onImportMachine()
 {
-    if (auto w = activeWindow (); w)
+    auto w = activeWindow ();
+    if (w == null)
     {
-        auto view = w->view ();
-        const auto list = view->machines ();
-
-        QInputDialog dlg (this);
-        dlg.setComboBoxEditable (false);
-        dlg.setComboBoxItems (list);
-        dlg.setLabelText ("选择机器");
-        dlg.setWindowTitle ("导入机器任务");
-
-        if (const auto res = dlg.exec (); res == QInputDialog::Accepted)
-        {
-            if (const auto fileName = QFileDialog::getOpenFileName(this, "导入", ".", "视频分析结果 (*.vaf)").toStdString ();
-                    not fileName.empty ())
-            {
-                if (auto content = file::read_all (::utf_to_sys (fileName).data ());
-                        content)
-                {
-                    if (const auto vafContent = readVaf (content.value ());
-                            not vafContent.empty ())
-                    {
-                        std::vector<std::pair<QString, qreal>> data;
-                        for (auto & it : vafContent)
-                        {
-                            data.emplace_back (it.name, it.stdTime);
-                        }
-                        view->importData (dlg.textValue (), data);
-                    }
-                    else
-                    {
-                        QMessageBox::information (this, "文件", "文件信息无法读取");
-                    }
-                }
-                else
-                {
-                    QMessageBox::information (this, "文件", "系统错误,无法读取文件");
-                }
-            }
-
-
-        }
-
+        return;
     }
+
+    auto view = w->view ();
+    const auto list = view->machines ();
+
+    QInputDialog dlg (this);
+    dlg.setComboBoxEditable (false);
+    dlg.setComboBoxItems (list);
+    dlg.setLabelText ("选择机器");
+    dlg.setWindowTitle ("导入机器任务");
+
+    const auto res = dlg.exec ();
+
+    if (res != QInputDialog::Accepted)
+    {
+        return;
+    }
+
+    const auto fileName = QFileDialog::getOpenFileName(this, "导入", ".", "视频分析结果 (*.vaf)").toStdString ();
+    if (fileName.empty ())
+    {
+        return;
+    }
+
+    auto content = file::read_all (::utf_to_sys (fileName).data ());
+    if (!content)
+    {
+        QMessageBox::information (this, "文件", "系统错误,无法读取文件");
+        return;
+    }
+
+    const auto vafContent = readVaf (content.value ());
+    if (vafContent.empty ())
+    {
+        QMessageBox::information (this, "文件", "文件信息无法读取");
+        return;
+    }
+
+    std::vector<std::pair<QString, qreal>> data;
+    for (auto & it : vafContent)
+    {
+        data.emplace_back (it.name, it.stdTime);
+    }
+    view->importData (dlg.textValue (), data);
 }
 
 not_null<Balance::HmAnalysis::Analysis *> HmMain::createWindow(HmMain::_createWindow param)
