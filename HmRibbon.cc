@@ -25,8 +25,8 @@ HmRibbon::HmRibbon(QWidget *parent)
 
         ButtonCell b;
 
-        b.add ("人", QPixmap ("png/作业员.png"), insertHuman_);
-        b.add ("机器", QPixmap ("png/导出.png"), insertMachine_);
+        b.add ("人", QPixmap ("png/作业员.png"), HumanAddTask_);
+        b.add ("机器", QPixmap ("png/导出.png"), MachineAddTask_);
         b.set_title ("插入作业内容");
         tab_content.at (0) = ::move (b);
 
@@ -57,8 +57,8 @@ void HmRibbon::initConn()
     connect (titleSetting_, &RibbonTool::clicked, this, &HmRibbon::titleSetting);
     connect (importHuman_, &RibbonTool::clicked, this, &HmRibbon::importHuman);
     connect (importMachine_, &RibbonTool::clicked, this, &HmRibbon::importMachine);
-    connect (insertHuman_, &RibbonTool::clicked, this, &HmRibbon::insertHuman);
-    connect (insertMachine_, &RibbonTool::clicked, this, &HmRibbon::insertMachine);
+    connect (HumanAddTask_, &RibbonTool::clicked, this, &HmRibbon::HumanAddTask);
+    connect (MachineAddTask_, &RibbonTool::clicked, this, &HmRibbon::MachineAddTask);
 
 
     connect (this, &HmRibbon::subwindowActive, taskSetting_, &RibbonTool::setEnabled);
@@ -66,8 +66,8 @@ void HmRibbon::initConn()
     connect (this, &HmRibbon::subwindowActive, titleSetting_, &RibbonTool::setEnabled);
     connect (this, &HmRibbon::subwindowActive, importHuman_, &RibbonTool::setEnabled);
     connect (this, &HmRibbon::subwindowActive, importMachine_, &RibbonTool::setEnabled);
-    connect (this, &HmRibbon::subwindowActive, insertHuman_, &RibbonTool::setEnabled);
-    connect (this, &HmRibbon::subwindowActive, insertMachine_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::subwindowActive, HumanAddTask_, &RibbonTool::setEnabled);
+    connect (this, &HmRibbon::subwindowActive, MachineAddTask_, &RibbonTool::setEnabled);
 
 
 }

@@ -24,8 +24,8 @@ public:
     ~HaView () override;
     void mouseMoveEvent (QMouseEvent * event) override;
     void mouseReleaseEvent (QMouseEvent * event) override;
-    void insertHuman();
-    void insertMachine(const QString &name);
+    void onHumanAddTask();
+    void onMachineAddTask(const QString &name);
     void taskSetting ();
     void setTotalTime (qreal totalTime) { totalTime_ = totalTime; totalTimeChanged (totalTime_); }
     qreal totalTime () const noexcept { return totalTime_; }

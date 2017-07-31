@@ -12,8 +12,8 @@ signals:
     void titleSetting ();
     void importHuman ();
     void importMachine ();
-    void insertHuman ();
-    void insertMachine ();
+    void HumanAddTask ();
+    void MachineAddTask ();
 public:
     HmRibbon(QWidget * parent = null);
     void initConn ();
@@ -23,7 +23,7 @@ private:
     RibbonTool * titleSetting_ = null;
     RibbonTool * importHuman_ = null;
     RibbonTool * importMachine_ = null;
-    RibbonTool * insertHuman_ = null;
-    RibbonTool * insertMachine_ = null;
+    RibbonTool * HumanAddTask_ = null;
+    RibbonTool * MachineAddTask_ = null;
 };
 
