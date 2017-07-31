@@ -99,7 +99,7 @@ void HaView::mouseReleaseEvent (QMouseEvent *event)
     }
 }
 
-void HaView::insertHuman()
+void HaView::onHumanAddTask()
 {
     AddTaskDlg dlg (this);
     const auto res = dlg.exec ();
@@ -121,7 +121,7 @@ void HaView::insertHuman()
     human_->addTask ({.taskName = name, .time = time});
 }
 
-void HaView::insertMachine(const QString & machineName)
+void HaView::onMachineAddTask(const QString & machineName)
 {
     const auto machine = selectedMachine (machineName);
     if (machine == null)

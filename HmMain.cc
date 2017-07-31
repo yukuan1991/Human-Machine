@@ -33,8 +33,8 @@ void HmMain::initConn()
     connect (ui->rib, &HmRibbon::fileSave, this, &HmMain::onFileSave);
     connect (ui->rib, &HmRibbon::importHuman, this, &HmMain::onImportHuman);
     connect (ui->rib, &HmRibbon::importMachine, this, &HmMain::onImportMachine);
-    connect (ui->rib, &HmRibbon::insertHuman, this, &HmMain::onInsertHuman);
-    connect (ui->rib, &HmRibbon::insertMachine, this, &HmMain::onMachineAddTask);
+    connect (ui->rib, &HmRibbon::HumanAddTask, this, &HmMain::onHumanAddTask);
+    connect (ui->rib, &HmRibbon::MachineAddTask, this, &HmMain::onMachineAddTask);
 
 
     connect (ui->rib, &HmRibbon::titleSetting, this, &HmMain::onTitleSetting);
@@ -197,12 +197,12 @@ void HmMain::onImportMachine()
     view->importData (dlg.textValue (), data);
 }
 
-void HmMain::onInsertHuman()
+void HmMain::onHumanAddTask()
 {
     if (auto w = activeWindow(); w)
     {
         auto view = w->view();
-        view->insertHuman();
+        view->onHumanAddTask();
     }
 }
 
@@ -220,7 +220,7 @@ void HmMain::onMachineAddTask ()
 
         if (const auto res = dlg.exec (); res == QInputDialog::Accepted)
         {
-            view->insertMachine(dlg.textValue ());
+            view->onMachineAddTask(dlg.textValue ());
         }
 
     }
