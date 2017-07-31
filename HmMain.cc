@@ -222,7 +222,6 @@ void HmMain::onMachineAddTask ()
         {
             view->insertMachine(dlg.textValue ());
         }
-
     }
 }
 

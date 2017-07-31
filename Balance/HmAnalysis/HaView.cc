@@ -13,12 +13,14 @@
 #include <boost/range/algorithm.hpp>
 #include <QApplication>
 #include <QFontMetricsF>
+#include <boost/range/adaptor/filtered.hpp>
 
 namespace Balance {
 namespace HmAnalysis {
 
 using std::make_unique;
 using namespace boost::range;
+using namespace boost::adaptors;
 using std::end;
 
 HaView::HaView(QWidget *parent)
@@ -223,13 +225,19 @@ void HaView::setTitle ()
 
 QStringList HaView::intersectedChannels()
 {
-    return {};
-    //QStringList list;
-    //if (human_->intersect ())
-    //{
-    //    list << human_->name ();
-    //}
-    //for ()
+    QStringList list;
+    if (human_->intersect ())
+    {
+        list << human_->objectName ();
+    }
+
+    for (auto it : machines_
+         | filtered ([] (auto && m) { return m->intersect (); }))
+    {
+        list << it->objectName ();
+    }
+
+    return list;
 }
 
 QStringList HaView::machines() const
