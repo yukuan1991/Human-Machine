@@ -121,8 +121,14 @@ void HaView::insertHuman()
     human_->addTask ({.taskName = name, .time = time});
 }
 
-void HaView::insertMachine(HaChannel * machine)
+void HaView::insertMachine(const QString & machineName)
 {
+    const auto machine = selectedMachine (machineName);
+    if (machine == null)
+    {
+        return;
+    }
+
     AddTaskDlg dlg (this);
     const auto res = dlg.exec ();
 
@@ -259,7 +265,7 @@ HaChannel* HaView::selectedMachine(const QString &channel)
     const auto found = find_if(machines_, [&] (auto & it) { return it->objectName() == channel; });
     if(found == end (machines_))
     {
-        return nullptr;
+        return null;
     }
 
     return (*found);

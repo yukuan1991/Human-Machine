@@ -25,7 +25,7 @@ public:
     void mouseMoveEvent (QMouseEvent * event) override;
     void mouseReleaseEvent (QMouseEvent * event) override;
     void insertHuman();
-    void insertMachine(HaChannel*);
+    void insertMachine(const QString &name);
     void taskSetting ();
     void setTotalTime (qreal totalTime) { totalTime_ = totalTime; totalTimeChanged (totalTime_); }
     qreal totalTime () const noexcept { return totalTime_; }
@@ -34,11 +34,7 @@ public:
     QStringList machines () const;
     void importHuman (const std::vector<std::pair<QString, qreal>> & data);
     void importData (const QString & channel, const std::vector<std::pair<QString, qreal>> & data);
-<<<<<<< HEAD
-    HaChannel* selectedMachine(const QString & channel);
-=======
 
->>>>>>> ed07f9b313948e9ba097d65f4b76284ec42b2eb8
 protected:
     void barClicked (Channel *bar);
     void blockClicked (HaBlock * block);
@@ -46,6 +42,7 @@ protected:
     void setTaskAttribute (not_null<HaBlock *> block);
     void resizeEvent (QResizeEvent * event) override;
     void resetTitle (Channel * bar);
+    HaChannel* selectedMachine(const QString & channel);
 private:
     std::unique_ptr<Balance::ResourceScene> scene_;
     HaChannel * human_ = nullptr;

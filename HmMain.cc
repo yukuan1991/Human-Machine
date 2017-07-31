@@ -33,14 +33,11 @@ void HmMain::initConn()
     connect (ui->rib, &HmRibbon::fileSave, this, &HmMain::onFileSave);
     connect (ui->rib, &HmRibbon::importHuman, this, &HmMain::onImportHuman);
     connect (ui->rib, &HmRibbon::importMachine, this, &HmMain::onImportMachine);
-<<<<<<< HEAD
     connect (ui->rib, &HmRibbon::insertHuman, this, &HmMain::onInsertHuman);
-    connect (ui->rib, &HmRibbon::insertMachine, this, &HmMain::onInsertMachine);
+    connect (ui->rib, &HmRibbon::insertMachine, this, &HmMain::onMachineAddTask);
 
 
-=======
     connect (ui->rib, &HmRibbon::titleSetting, this, &HmMain::onTitleSetting);
->>>>>>> ed07f9b313948e9ba097d65f4b76284ec42b2eb8
     connect (ui->mdi, &QMdiArea::subWindowActivated, this, &HmMain::set_button_enabled);
 }
 
@@ -209,7 +206,7 @@ void HmMain::onInsertHuman()
     }
 }
 
-void HmMain::onInsertMachine()
+void HmMain::onMachineAddTask ()
 {
     if(auto w = activeWindow(); w)
     {
@@ -223,8 +220,7 @@ void HmMain::onInsertMachine()
 
         if (const auto res = dlg.exec (); res == QInputDialog::Accepted)
         {
-
-            view->insertMachine(view->selectedMachine(dlg.textValue()));
+            view->insertMachine(dlg.textValue ());
         }
 
     }

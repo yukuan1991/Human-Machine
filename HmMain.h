@@ -31,7 +31,7 @@ private:
     void onImportHuman ();
     void onImportMachine ();
     void onInsertHuman ();
-    void onInsertMachine ();
+    void onMachineAddTask ();
     struct _createWindow { qreal totalTime; const QString & title; };
     not_null<Balance::HmAnalysis::Analysis *> createWindow(_createWindow para);
 
