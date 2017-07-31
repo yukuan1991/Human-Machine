@@ -34,11 +34,11 @@
    </item>
    <item>
     <widget class="QTabWidget" name="data">
-     <widget class="QWidget" name="usage" native="true">
+     <widget class="QWidget" name="usage">
       <attribute name="title">
        <string>利用率</string>
       </attribute>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -62,7 +62,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QLabel" name="label_5">
+         <widget class="QLabel" name="labelHuman">
           <property name="text">
            <string/>
           </property>
