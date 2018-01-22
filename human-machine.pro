@@ -39,7 +39,10 @@ SOURCES += \
     Balance/HmAnalysis/Analysis.cc \
     Balance/HmAnalysis/HaChannel.cc \
     Balance/HmAnalysis/ChannelTitle.cc \
-    openvaf.cc
+    openvaf.cc \
+    verification/des.cc \
+    verification/encryption.cc \
+    verification/verification.cpp
 
 
 FORMS += \
@@ -61,9 +64,17 @@ HEADERS += \
     Balance/HmAnalysis/Analysis.h \
     Balance/HmAnalysis/HaChannel.h \
     Balance/HmAnalysis/ChannelTitle.h \
-    openvaf.h
+    openvaf.h \
+    verification/des.h \
+    verification/encryption.h \
+    verification/json.hpp \
+    verification/verification.h
 
 LIBS += -lboost_filesystem
 LIBS += -lboost_system
+LIBS += -lboost_regex
+LIBS += -lboost_thread
 LIBS += -lboost_locale
 LIBS += -liconv
+LIBS += -lwininet
+LIBS += -lws2_32
