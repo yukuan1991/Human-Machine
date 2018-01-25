@@ -14,10 +14,24 @@ HmRibbon::HmRibbon(QWidget *parent)
 
         b.add ("人", QPixmap ("png/作业员.png"), importHuman_);
         b.add ("机器", QPixmap ("png/导出.png"), importMachine_);
-        b.set_title ("导入分析文件");
+        b.set_title ("导入(vaf file)");
         tab_content.at (0) = ::move (b);
 
-        this->setupTab (tab_content, "导入");
+        this->setupTab (tab_content, "编辑");
+    }
+
+    {
+        std::array<UiGroup, 1> tab_content;
+
+        ButtonCell b;
+
+        b.add ("作业员", QPixmap ("png/作业员.png"), taskSetting_);
+        b.add ("时间", QPixmap ("png/单位.png"), timeSetting_);
+        b.add ("表头", QPixmap ("png/搜索.png"), titleSetting_);
+        b.set_title ("属性设置");
+        tab_content.at (0) = ::move (b);
+
+        this->setupTab (tab_content, "设置");
     }
 
     {
@@ -27,24 +41,10 @@ HmRibbon::HmRibbon(QWidget *parent)
 
         b.add ("人", QPixmap ("png/作业员.png"), HumanAddTask_);
         b.add ("机器", QPixmap ("png/导出.png"), MachineAddTask_);
-        b.set_title ("插入作业内容");
+        b.set_title ("作业内容");
         tab_content.at (0) = ::move (b);
 
         this->setupTab (tab_content, "插入");
-    }
-
-    {
-        std::array<UiGroup, 1> tab_content;
-
-        ButtonCell b;
-
-        b.add ("作业设置", QPixmap ("png/作业员.png"), taskSetting_);
-        b.add ("时间设置", QPixmap ("png/单位.png"), timeSetting_);
-        b.add ("表头设置", QPixmap ("png/搜索.png"), titleSetting_);
-        b.set_title ("");
-        tab_content.at (0) = ::move (b);
-
-        this->setupTab (tab_content, "设置");
     }
 
     initConn ();
