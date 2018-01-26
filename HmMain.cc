@@ -28,6 +28,7 @@ HmMain::HmMain(QWidget *parent) :
 void HmMain::initConn()
 {
     connect (ui->rib, &Ribbon::fileNew, this, &HmMain::onFileNew);
+    connect (ui->rib, &Ribbon::fileExit, this, &HmMain::close);
     connect (ui->rib, &HmRibbon::taskSetting, this, &HmMain::onTaskSetting);
     connect (ui->rib, &HmRibbon::timeSetting, this, &HmMain::onTimeSetting);
     connect (ui->rib, &HmRibbon::fileSave, this, &HmMain::onFileSave);
