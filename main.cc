@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 
     HmMain m;
     m.resize (1440, 900);
-    m.setWindowTitle("人机作业分析");
+    m.setWindowTitle("Human-Machine Operation Study");
     m.show ();
 
     QTimer timer;
